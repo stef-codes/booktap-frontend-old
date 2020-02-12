@@ -2,7 +2,6 @@ const BASE_URL = 'http://localhost:3000'
 document.addEventListener("DOMContentLoaded", function() {
     console.log('HI-C', 'color: firebrick');
      fetchBooks()
-    //  renderBooks(books)
     // fetchDogBreeds()
     // handleClickBreed()
   })
@@ -13,17 +12,23 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(books => renderBooks(books));
    }
 
+
+
   function renderBooks(books) {
     const books_container = document.querySelector('.container')
     books_container.innerHTML = ""; 
     books.forEach(book => {
       let book_div = document.createElement('div')
+      // add image 
       let book_img = document.createElement('img')
-      let blink = `./src/${book.imageLink}`
-      book_img.src = blink
+      let bLink = `./src/${book.imageLink}`
+      book_img.src = bLink
+      // add title 
       book_div.innerHTML += `<h4>${book.title}</h4>`
+
       books_container.appendChild(book_div)
       book_div.appendChild(book_img)
+
 
     })
   }
