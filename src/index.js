@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // }
 
 //show form 
-function displayCreateForm(){
+function displayCreateBookForm(){
   let bookFormDiv = document.getElementById("book-form") 
   let html = `
       <form onsubmit="createBook();return false;">
@@ -52,6 +52,18 @@ function displayCreateForm(){
       <input type ="text" id="title"></br>
       <label>Author</label>
       <input type ="text" id="author"></br>
+      <label>Book Link</label>
+      <input type ="text" id="link"></br>
+      <label>Image URL</label>
+      <input type ="text" id="image-link"></br>
+      <label>Language</label>
+      <input type ="text" id="language"></br>
+      <label>Pages</label>
+      <input type ="text" id="pages"></br>
+      <label>Year</label>
+      <input type ="text" id="year"></br>
+      <label>Country</label>
+      <input type ="text" id="country"></br>
       <input type ="submit" value="Create book">
   `
   bookFormDiv.innerHTML = html
@@ -62,7 +74,8 @@ function displayCreateForm(){
 function createBook(){
   const book = {
       title: document.getElementById('title').value,
-      author: document.getElementById('author').value
+      author: document.getElementById('author').value,
+      imageLink: document.getElementById('image-link').value
   }
   fetch(BASE_URL+'/books',{
       method: "POST",
@@ -76,7 +89,7 @@ function createBook(){
   .then(book => {
       document.querySelector('#book-list').innerHTML += `
       <li><a href="#" data-id="${book.id}">${book.title}</a>
-       - ${book.author}
+       - ${book.author} ${book.imageLink}
        <button data-id=${book.id} onclick="editbook(${book.id})"; return false;>Edit</button>
        <button data-id=${book.id} onclick="removebook(${book.id})"; return false;>Delete</button>
        </li>
@@ -84,6 +97,27 @@ function createBook(){
       // attachClickTobookLinks()
       clearForm()
   })
+}
+
+
+// Create Comments Form
+function displayCreateCommentForm() {
+  event.preventDefault()
+  let locid = event.target.dataset.locationId
+  let formdiv = document.querySelector('#device-form')
+
+  fetch(BASE_URL + `/locations/${locid}`)
+    .then(resp => resp.json())
+    .then(data => {
+      formdiv.innerHTML = `<h3>${data.name}</h3>`
+      let html = `
+      <form onsubmit="createDev(); return false">
+      
+      <input type="submit">
+      </form>
+      `
+      formdiv.innerHTML += html
+    })
 }
 
 
