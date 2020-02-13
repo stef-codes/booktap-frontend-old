@@ -19,15 +19,19 @@ document.addEventListener("DOMContentLoaded", function() {
     books_container.innerHTML = ""; 
     books.forEach(book => {
       let book_div = document.createElement('div')
+      book_div.setAttribute("data-id",book.id)
       // add image 
       let book_img = document.createElement('img')
       let bLink = `./src/${book.imageLink}`
       book_img.src = bLink
       // add title 
-      book_div.innerHTML += `<h4>${book.title}</h4>`
+      book_div.innerHTML += `<br>${book.title}<br>`
+      //add comment link
+      book_div.innerHTML += `<a href="#" onclick='fetchBook();return false;'>Add a Comment</a>`
 
       books_container.appendChild(book_div)
       book_div.appendChild(book_img)
+
     })
   }
 
@@ -99,24 +103,39 @@ function createBook(){
   })
 }
 
+// for testing
+function fetchBook() {
+  let book_id = event.target.parentElement.dataset.id
 
-// Create Comments Form
-function displayCreateCommentForm() {
-  event.preventDefault()
-  let locid = event.target.dataset.locationId
-  let formdiv = document.querySelector('#device-form')
+  fetch(BASE_URL+'/books/'+book_id)
+  .then(resp => resp.json())
+  .then(book => console.log(book));
+ }
 
-  fetch(BASE_URL + `/locations/${locid}`)
+
+//Create Comments Form
+function displayCreateForm() {
+  let book_id = event.target.dataset.book_id
+  let formdiv = document.querySelector('#comment-form')
+
+  fetch(BASE_URL + `/books/${book_id}`)
     .then(resp => resp.json())
     .then(data => {
-      formdiv.innerHTML = `<h3>${data.name}</h3>`
+
+      formdiv.innerHTML = `<h3>${data.conte}</h3>`
       let html = `
-      <form onsubmit="createDev(); return false">
-      
+      <form>
+      <input type="hidden" id="location_id" name="location_id" value=${data.id}></br>
+      <label>Content</label>
+      <input type ="text" id="content" name="type"></br>
+      <label>Type</label>
+      <input type ="text" id="type" name-"type"></br>
       <input type="submit">
       </form>
       `
       formdiv.innerHTML += html
+      let form = document.querySelector('form')
+      form.addEventListener("submit", createDev)
     })
 }
 
