@@ -28,10 +28,66 @@ document.addEventListener("DOMContentLoaded", function() {
 
       books_container.appendChild(book_div)
       book_div.appendChild(book_img)
-
-
     })
   }
+
+  function clearForm(){
+    let bookFormDiv = document.getElementById("book-form")
+    bookFormDiv.innerHTML = ''
+}
+
+// function attachClickTobookList(){
+//   let books = document.querySelector("#book-list")
+//   books.forEach(book =>{
+//       book.addEventListener('click', displayBook)
+//   })
+// }
+
+//show form 
+function displayCreateForm(){
+  let bookFormDiv = document.getElementById("book-form") 
+  let html = `
+      <form onsubmit="createBook();return false;">
+      <label>Title</label>
+      <input type ="text" id="title"></br>
+      <label>Author</label>
+      <input type ="text" id="author"></br>
+      <input type ="submit" value="Create book">
+  `
+  bookFormDiv.innerHTML = html
+}
+
+//add new book to database and page
+
+function createBook(){
+  const book = {
+      title: document.getElementById('title').value,
+      author: document.getElementById('author').value
+  }
+  fetch(BASE_URL+'/books',{
+      method: "POST",
+      body: JSON.stringify(book),
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      }
+  })
+  .then(resp => resp.json())
+  .then(book => {
+      document.querySelector('#book-list').innerHTML += `
+      <li><a href="#" data-id="${book.id}">${book.title}</a>
+       - ${book.author}
+       <button data-id=${book.id} onclick="editbook(${book.id})"; return false;>Edit</button>
+       <button data-id=${book.id} onclick="removebook(${book.id})"; return false;>Delete</button>
+       </li>
+      `
+      // attachClickTobookLinks()
+      clearForm()
+  })
+}
+
+
+
 
 //   function fetchDogBreeds() {
 //     fetch('https://dog.ceo/api/breeds/list/all')
