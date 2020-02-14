@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
       // add title 
       book_div.innerHTML += `<br>${book.title}<br>`
       //add comment link
-      book_div.innerHTML += `<a href="#" onclick='fetchBook();return false;'>Add a Comment</a>`
+      book_div.innerHTML += `<a href="#" onclick='displayCreateCommentForm();return false;'>Add a Comment</a>`
 
       books_container.appendChild(book_div)
       book_div.appendChild(book_img)
@@ -114,29 +114,58 @@ function fetchBook() {
 
 
 //Create Comments Form
-function displayCreateForm() {
-  let book_id = event.target.dataset.book_id
+function displayCreateCommentForm() {
+  let book_id = event.target.parentElement.dataset.id
   let formdiv = document.querySelector('#comment-form')
 
-  fetch(BASE_URL + `/books/${book_id}`)
+  fetch(BASE_URL+'/books/'+book_id)
     .then(resp => resp.json())
-    .then(data => {
+    .then(book => {
 
-      formdiv.innerHTML = `<h3>${data.conte}</h3>`
+      formdiv.innerHTML = `<h3>${book.title}</h3>`
       let html = `
       <form>
-      <input type="hidden" id="location_id" name="location_id" value=${data.id}></br>
-      <label>Content</label>
-      <input type ="text" id="content" name="type"></br>
+      <input type="hidden" id="book_id" name="book_id" value=${book.id}></br>
+      <label>Comment</label>
+      <input type ="text" id="content" name="content"></br>
       <label>Type</label>
-      <input type ="text" id="type" name-"type"></br>
+      <input type ="text" id="comment_type" name-"comment_type"></br>
       <input type="submit">
       </form>
       `
       formdiv.innerHTML += html
       let form = document.querySelector('form')
-      form.addEventListener("submit", createDev)
+      form.addEventListener("submit", createComment)
     })
+}
+
+function createComment() {
+  event.preventDefault()
+  // let book_id = event.target.book_id.value
+
+  const comment = {
+    content: event.target.content.value,
+    comment_type: event.target.comment_type.value,
+    book_id: event.target.book_id.value
+  }
+
+  fetch(BASE_URL+'/books/'+comment.book_id+'/comments',{
+    method: "POST",
+    body: JSON.stringify(comment),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  } )
+    .then(resp => resp.json())
+    .then(data => console.log(data))
+
+      // let newDev = new RpDevice(data)
+      // newDev.renderDevice()
+      // let formdiv = document.querySelector('#device-form')
+      // formdiv.innerHTML = ''
+   // )
+//}
 }
 
 
