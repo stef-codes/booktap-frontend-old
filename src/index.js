@@ -1,37 +1,24 @@
 const BASE_URL = 'http://localhost:3000'
-document.addEventListener("DOMContentLoaded", function() {
-    console.log('HI-C', 'color: firebrick');
+const BOOKS_URL = 'http://localhost:3000/books'
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log('Ready to Go', 'color: firebrick');
      fetchBooks()
-    // fetchDogBreeds()
-    // handleClickBreed()
   })
 
    function fetchBooks() {
-    fetch(BASE_URL+'/books')
+    fetch(BOOKS_URL)
     .then(resp => resp.json())
     .then(books => renderBooks(books));
    }
 
-
-
   function renderBooks(books) {
     const books_container = document.querySelector('.container')
     books_container.innerHTML = ""; 
+
     books.forEach(book => {
-      let book_div = document.createElement('div')
-      book_div.setAttribute("data-id",book.id)
-      // add image 
-      let book_img = document.createElement('img')
-      let bLink = `./src/${book.imageLink}`
-      book_img.src = bLink
-      // add title 
-      book_div.innerHTML += `<br>${book.title}<br>`
-      //add comment link
-      book_div.innerHTML += `<a href="#" onclick='displayCreateCommentForm();return false;'>Add a Comment</a>`
-
-      books_container.appendChild(book_div)
-      book_div.appendChild(book_img)
-
+      let objB = new Book(book)
+      objB.render()
     })
   }
 
@@ -40,12 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
     bookFormDiv.innerHTML = ''
 }
 
-// function attachClickTobookList(){
-//   let books = document.querySelector("#book-list")
-//   books.forEach(book =>{
-//       book.addEventListener('click', displayBook)
-//   })
-// }
+
 
 //show form 
 function displayCreateBookForm(){
@@ -91,13 +73,15 @@ function createBook(){
   })
   .then(resp => resp.json())
   .then(book => {
-      document.querySelector('#book-list').innerHTML += `
-      <li><a href="#" data-id="${book.id}">${book.title}</a>
-       - ${book.author} ${book.imageLink}
-       <button data-id=${book.id} onclick="editbook(${book.id})"; return false;>Edit</button>
-       <button data-id=${book.id} onclick="removebook(${book.id})"; return false;>Delete</button>
-       </li>
-      `
+      let objB = new Book(book)
+      objB.renderNewBook() 
+      // document.querySelector('#book-list').innerHTML += `
+      // <li><a href="#" data-id="${book.id}">${book.title}</a>
+      //  - ${book.author} ${book.imageLink}
+      //  <button data-id=${book.id} onclick="editbook(${book.id})"; return false;>Edit</button>
+      //  <button data-id=${book.id} onclick="removebook(${book.id})"; return false;>Delete</button>
+      //  </li>
+      // `
       // attachClickTobookLinks()
       clearForm()
   })
@@ -158,8 +142,16 @@ function createComment() {
     }
   } )
     .then(resp => resp.json())
-    .then(data => console.log(data))
+    .then(comment => {
 
+    document.querySelector('#comment-list').innerHTML += `
+    <li><a href="#" data-id="${comment.id}">${comment.content}</a>
+     - ${comment.comment_type} 
+     <button data-id=${comment.id} onclick="editbook(${comment.id})"; return false;>Edit</button>
+     <button data-id=${comment.id} onclick="removebook(${comment.id})"; return false;>Delete</button>
+     </li>
+    `
+    })
       // let newDev = new RpDevice(data)
       // newDev.renderDevice()
       // let formdiv = document.querySelector('#device-form')
