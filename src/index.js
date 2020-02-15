@@ -75,14 +75,6 @@ function createBook(){
   .then(book => {
       let objB = new Book(book)
       objB.renderNewBook() 
-      // document.querySelector('#book-list').innerHTML += `
-      // <li><a href="#" data-id="${book.id}">${book.title}</a>
-      //  - ${book.author} ${book.imageLink}
-      //  <button data-id=${book.id} onclick="editbook(${book.id})"; return false;>Edit</button>
-      //  <button data-id=${book.id} onclick="removebook(${book.id})"; return false;>Delete</button>
-      //  </li>
-      // `
-      // attachClickTobookLinks()
       clearForm()
   })
 }
