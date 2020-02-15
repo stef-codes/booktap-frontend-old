@@ -2,10 +2,8 @@ const BASE_URL = 'http://localhost:3000'
 const BOOKS_URL = 'http://localhost:3000/books'
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log('Ready to Go', 'color: firebrick');
      fetchBooks()
   })
-
    function fetchBooks() {
     fetch(BOOKS_URL)
     .then(resp => resp.json())
@@ -63,7 +61,7 @@ function createBook(){
       author: document.getElementById('author').value,
       imageLink: document.getElementById('image-link').value
   }
-  fetch(BASE_URL+'/books',{
+  fetch(BOOKS_URL,{
       method: "POST",
       body: JSON.stringify(book),
       headers: {
@@ -144,41 +142,7 @@ function createComment() {
      </li>
     `
     })
-      // let newDev = new RpDevice(data)
-      // newDev.renderDevice()
-      // let formdiv = document.querySelector('#device-form')
-      // formdiv.innerHTML = ''
-   // )
-//}
 }
 
 
 
-
-//   function fetchDogBreeds() {
-//     fetch('https://dog.ceo/api/breeds/list/all')
-//     .then(resp => resp.json())
-//     .then(breeds => renderBreeds(Object.keys(breeds.message)));
-//   }
-
-//   function renderBreeds(breeds) {
-//     const dog_breeds = document.getElementById('dog-breeds')
-//     breeds.forEach(breed => {
-//       const li = document.createElement('li')
-//     //  li.innerHTML = `${breed}`
-//       li.innerHTML = `<p class='breed_name'>${breed}</p>`
-//     //    li.setAttribute("class", "d")
-//       dog_breeds.appendChild(li)
-//       li.style.cursor = 'pointer';
-//       li.addEventListener("click", handleClickBreed)
-//     })
-//   }
-
-//   function handleClickBreed(event) {
-//         event.target.style.color = "lightblue"; 
-//     } 
-
-    //Still Need to Filter Breeds
-  //function 
-
-// document.getElementById("myDiv").style.color = "lightblue";
