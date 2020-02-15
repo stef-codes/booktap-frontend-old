@@ -17,6 +17,7 @@ class Book {
         let books_container = document.querySelector('.container')
         let book_div = document.createElement('div')
         book_div.setAttribute("data-id",this.id)
+        book_div.classList.add("book");
         let book_img = document.createElement('img')
         let bLink = `./src/${this.imageLink}`
         book_img.src = bLink
@@ -25,6 +26,7 @@ class Book {
         book_div.innerHTML += `<h3>${this.title}</h3>`
    
         let comment_div = document.createElement('div')
+        comment_div.classList.add("comments");
         book_div.append(comment_div)
   
         //add comments 
